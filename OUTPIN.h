@@ -34,7 +34,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     if (state == LOW) *_out &= ~_bitmask;
     else              *_out |= _bitmask;
     SREG = oldSREG;
@@ -47,7 +47,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     *_out |= _bitmask;
     SREG = oldSREG;
 #else
@@ -59,7 +59,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     *_out &= ~_bitmask;
     SREG = oldSREG;
 #else
@@ -71,7 +71,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     *_out ^= _bitmask;
     SREG = oldSREG;
 #else
@@ -86,7 +86,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     *_out |= _bitmask;
     *_out &= ~_bitmask;
     SREG = oldSREG;
@@ -100,7 +100,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     *_out |= _bitmask;
     while(nops--) asm("NOP");
     *_out &= ~_bitmask;
@@ -116,7 +116,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     *_out &= ~_bitmask;
     *_out |= _bitmask;
     SREG = oldSREG;
@@ -130,7 +130,7 @@ public:
   {
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
-    cli();
+    noInterrupts();
     *_out &= ~_bitmask;
     while(nops--) asm("NOP");
     *_out |= _bitmask;
