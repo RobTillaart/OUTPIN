@@ -28,8 +28,10 @@ than equivalent code using digitalWrite().
 
 The main reason to write this library was to optimize pulse lengths for a test setup.
 This resulted in additional functions **pulseHigh()** and **pulseLow()**.
-These have 255 steps between roughly 2 and 82 microseconds (step ~0.314 us).
+These have 255 steps between roughly 0.5 and 80 microseconds (step 0.3125 us).
 Finally these is a **pulseOut(state, duration)** which is used for pulses above 80 us.
+
+Do not forget a (strong) pullup resistor!
 
 The library should work on other platforms, however the code is not optimized for them.
 If you have (optimized) additions for other boards, please open a PR.
@@ -56,15 +58,15 @@ Indicative time is per 1000 function calls, so digitalWrite() takes ~3.6 microse
 |  digitalWrite   |    3592   |   1.0 x   |  reference
 |  set            |    2016   |   1.7 x   |
 |  high           |    1136   |   3.1 x   |
-|  low            |    1196   |   3.0 x   |
+|  low            |    1132   |   3.1 x   |
 |  toggle         |    1136   |   3.1 x   |
 |                 |           |           |
-|  DW             |    6792   |   1.0 x   |  "pulseHigh" with digitalWrite() on UNO
-|  pulseHigh()    |    1892   |   3.5 x   |  Actual pulse length is shorter (overhead).
-|  pulseHigh(0)   |    2648   |   2.5 x   |
-|  pulseHigh(20)  |    8928   |           |
+|  DW             |    6788   |   1.0 x   |  "pulseHigh" with digitalWrite() on UNO
+|  pulseHigh()    |    1832   |   3.7 x   |  Actual pulse length is shorter (overhead).
+|  pulseHigh(0)   |    2584   |   2.6 x   |
+|  pulseHigh(20)  |    8864   |           |
 |  step size      |  0.3140   |           |  tune pulseHigh() in these steps
-|  pulseHigh(13)  |    6732   |   1.0 x   |   
+|  pulseHigh(13)  |    6664   |   1.0 x   |   
 
 Accuracy **pulseOut()**
 
@@ -100,19 +102,21 @@ Accuracy **pulseOut()**
 Note this is faster than **pulseHigh(0)**
 - **void pulseHigh(uint8_t nops)** extend HIGH pulse with NOPs.
 
-The indicative formula for the pulse duration based upon the duration 
-of the function calls **OUTPIN_pulseHighNops.ino** is (my UNO R3).
-```
-time = 2.172856 + 0.314356 * NOPs;
-```
-To calculate the number of **NOPs = round((time - 2.172856)/ 0.314356)**.
-Note the actual pulse is slightly smaller as there is function call 
-and some interrupt blocking overhead. (TODO better formula).
+The formula for the pulse duration based upon processing one NOP takes 0.3125 us
+and the setting takes 0.1875 us.
 
-There is a "gap" between **pulseHigh()** and **pulseHigh(0)** for
+```
+time = 0.1875 + 0.3125 * NOPs;
+```
+
+To calculate the number of **NOPs = round((time - 0.1875)/ 0.3125)**.
+Note the actual pulse is smaller than the function duration as there is 
+function call and some interrupt blocking overhead e.g. 159 NOPs => ~50 us.
+
+_Note there is a "gap" between **pulseHigh()** and **pulseHigh(0)** for
 which one could add functions with hard coded number of NOPs.
 The library does not provide these as it would add about 11 extra functions.
-This needs extra thoughts how to handle.
+This needs extra thoughts how to handle._
 
 
 ### Pulse LOW

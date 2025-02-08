@@ -21,9 +21,10 @@ public:
     _pin = pin;
     pinMode(_pin, OUTPUT);
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
-    _port    = digitalPinToPort(_pin);
-    _out     = portOutputRegister(_port);
-    _bitmask = digitalPinToBitMask(_pin);
+    _port     = digitalPinToPort(_pin);
+    _out      = portOutputRegister(_port);
+    _bitmask  = digitalPinToBitMask(_pin);
+    _bitmask2 = ~_bitmask;  //  make bit operations equal in time.
     set(state);
 #else
     digitalWrite(_pin, state);
@@ -35,7 +36,7 @@ public:
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
     noInterrupts();
-    if (state == LOW) *_out &= ~_bitmask;
+    if (state == LOW) *_out &= _bitmask2;
     else              *_out |= _bitmask;
     SREG = oldSREG;
 #else
@@ -60,7 +61,7 @@ public:
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
     noInterrupts();
-    *_out &= ~_bitmask;
+    *_out &= _bitmask2;
     SREG = oldSREG;
 #else
     digitalWrite(_pin, LOW);
@@ -88,7 +89,7 @@ public:
     uint8_t oldSREG = SREG;
     noInterrupts();
     *_out |= _bitmask;
-    *_out &= ~_bitmask;
+    *_out &= _bitmask2;
     SREG = oldSREG;
 #else
     digitalWrite(_pin, HIGH);
@@ -103,7 +104,7 @@ public:
     noInterrupts();
     *_out |= _bitmask;
     while(nops--) asm("NOP");
-    *_out &= ~_bitmask;
+    *_out &= _bitmask2;
     SREG = oldSREG;
 #else
     digitalWrite(_pin, HIGH);
@@ -117,7 +118,7 @@ public:
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
     noInterrupts();
-    *_out &= ~_bitmask;
+    *_out &= _bitmask2;
     *_out |= _bitmask;
     SREG = oldSREG;
 #else
@@ -131,7 +132,7 @@ public:
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_MEGAAVR)
     uint8_t oldSREG = SREG;
     noInterrupts();
-    *_out &= ~_bitmask;
+    *_out &= _bitmask2;
     while(nops--) asm("NOP");
     *_out |= _bitmask;
     SREG = oldSREG;
@@ -164,6 +165,7 @@ private:
   uint8_t _port;
   volatile uint8_t * _out;
   uint8_t _bitmask;
+  uint8_t _bitmask2;
   #endif
 };
 
