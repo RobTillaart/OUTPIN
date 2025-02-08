@@ -51,7 +51,7 @@ public:
     *_out |= _bitmask;
     SREG = oldSREG;
 #else
-    digitalWrite(_pin, state);
+    digitalWrite(_pin, HIGH);
 #endif
   };
 
@@ -63,7 +63,7 @@ public:
     *_out &= ~_bitmask;
     SREG = oldSREG;
 #else
-    digitalWrite(_pin, state);
+    digitalWrite(_pin, LOW);
 #endif
   };
 
@@ -75,7 +75,7 @@ public:
     *_out ^= _bitmask;
     SREG = oldSREG;
 #else
-    digitalWrite(_pin, !digitalRead(pin));
+    digitalWrite(_pin, !digitalRead(_pin));
 #endif
   };
 
