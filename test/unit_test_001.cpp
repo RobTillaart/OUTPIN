@@ -27,7 +27,7 @@
 
 unittest_setup()
 {
-  fprintf(stderr, "OUTPIN_LIB_VERSION: %s\n", OUTPIN_LIB_VERSION);
+  fprintf(stderr, "OUTPIN_LIB_VERSION: %s\n", (char *) OUTPIN_LIB_VERSION);
 }
 
 
