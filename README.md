@@ -98,8 +98,7 @@ Accuracy **pulseOut()**
 
 ### Pulse HIGH
 
-- **void pulseHigh()** gives shortest possible HIGH pulse. 
-Note this is faster than **pulseHigh(0)**
+- **void pulseHigh()** gives shortest possible HIGH pulse.
 - **void pulseHigh(uint8_t nops)** extend HIGH pulse with NOPs.
 
 _Note that different UNO's can have a slightly different clock speed,
@@ -152,7 +151,6 @@ my UNO is a bit slow ~ 1.5/314 ==> 0.48%.
 ### Pulse LOW
 
 - **void pulseLow()** gives shortest possible LOW pulse.
-Note this is faster than **pulseLow(0)**
 - **void pulseLow(uint8_t nops)** extend LOW pulse with NOPs.
 
 Duration are assumed the same as for **pulseHigh(nops)**.
