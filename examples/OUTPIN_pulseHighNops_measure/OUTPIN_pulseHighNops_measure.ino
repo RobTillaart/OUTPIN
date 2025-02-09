@@ -14,6 +14,8 @@ OUTPIN op(13, LOW);
 
 uint32_t start, stop;
 
+volatile uint8_t value;
+
 void setup()
 {
   Serial.begin(115200);
@@ -24,11 +26,14 @@ void setup()
   Serial.println();
   delay(100);
 
+  //  value is volatile to prevent optimizations of compiler.
+  value = 255;
   while (1)
   {
-    op.pulseHigh(80);
+    //  constant values < 8 are optimized!
+    op.pulseHigh(9);
     // op.pulseHigh(50);
-    delayMicroseconds(25);
+    delayMicroseconds(20);
   }
 }
 
