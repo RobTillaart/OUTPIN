@@ -105,8 +105,9 @@ Note this is faster than **pulseHigh(0)**
 _Note that different UNO's can have a slightly different clock speed,
 which even may differ for different temperatures._
 
-The formula for the pulse duration differs depending on
-- (a) is nops a constant < 9  (known at compile time), above 8 values are same.
+The formula for the pulse duration differs depending on compiler optimizations:
+- (a) is nops a constant < 9  (known at compile time => optimized),  
+   if nops > 8 timing is the same as (b).
 - (b) is nops a (volatile) variable (unknown at compile time)
 
 Indicative time of pulses in nano seconds, Arduino UNO R3, IDE: 1.8.19
