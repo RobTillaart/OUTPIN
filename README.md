@@ -172,11 +172,16 @@ See **OUTPIN_performance.ino** sketch for figures.
 
 **Experimental - work in progress**
 
-Timing differs between these functions. => use with care.
-To be verified with oscilloscope when time permits.
-
 - **void multiPulseHigh(uint8_t nopsHIGH, uint8_t nopsLOW, uint8_t times)**
 - **void multiPulseLow(uint8_t nopsHIGH, uint8_t nopsLOW, uint8_t times)**
+
+From performance test.
+
+Timing differs between these functions. => use with care.  
+To be verified with oscilloscope when time permits.  
+
+multiPulseHigh(10, 10, times) => duration = 9.379 x times + 3.046 us  
+multiPulseLow(10, 10, times)  => duration = 8.599 x times + 4.418 us  
 
 
 ## Future
